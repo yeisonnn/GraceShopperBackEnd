@@ -5,7 +5,7 @@ const {
   getProductCategoryById,
 } = require('../db/products');
 
-router.get('/', async (req, res, next) => {
+router.get('/category', async (req, res, next) => {
   try {
     const productCategory = await getAllProductCategory();
     if (productCategory) {
@@ -18,7 +18,7 @@ router.get('/', async (req, res, next) => {
   }
 });
 
-router.get('/:categoryId', async (req, res, next) => {
+router.get('/category/:categoryId', async (req, res, next) => {
   try {
     const productCategory = await getProductCategoryById(req.params.categoryId);
     if (productCategory) {

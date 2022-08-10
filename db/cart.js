@@ -28,7 +28,7 @@ const createDataCartProducts = async ({ product_id, cart_id, quantity }) => {
   }
 };
 
-const updateCartProduct = async ({product_id, cart_id, quantity }) => {
+const updateCartProduct = async ({ product_id, cart_id, quantity }) => {
   try {
     const { rows } = await client.query(
       `INSERT INTO cart_products(product_id, cart_id, quantity)
@@ -36,14 +36,13 @@ const updateCartProduct = async ({product_id, cart_id, quantity }) => {
     FROM 
     RETURNING *`,
       [product_id, cart_id, quantity]
-
     );
     return rows;
   } catch (error) {
     throw error;
   }
 };
-const getAllCartData = async({ product_id, id }) => {
+const getAllCartData = async ({ product_id, id }) => {
   try {
     const { rows } = await client.query(
       `SELECT *
@@ -56,36 +55,31 @@ const getAllCartData = async({ product_id, id }) => {
   } catch (error) {
     throw error;
   }
-}
- 
-const deleteCartProduct = async ({product_id, quantity}) => {
-    try {
-      const {
-        rows: { rows },
-      } = await client.query(
-        `
-  DELETE FROM CART
+};
+
+const deleteCartProduct = async ({ product_id, quantity }) => {
+  try {
+    const {
+      rows: { rows },
+    } = await client.query(
+      `
+  DELETE FROM cart
   WHERE "product_id"=$1 "quantity"=$2
   RETURNING *;
   `,
-        [product_id, quantity]
-      );
-  
-      return rows;
-    } catch (error) {
-      throw error;
-    }
+      [product_id, quantity]
+    );
+
+    return rows;
+  } catch (error) {
+    throw error;
   }
-
-
-
-
+};
 
 module.exports = {
   createCartData,
   createDataCartProducts,
   updateCartProduct,
   getAllCartData,
-  deleteCartProduct
-
+  deleteCartProduct,
 };

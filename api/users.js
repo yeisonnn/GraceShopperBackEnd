@@ -48,6 +48,7 @@ router.post('/register', async (req, res, next) => {
   }
 });
 
+// USER LOGIN
 router.post('/login', async (req, res, next) => {
   const { username, password } = req.body;
 
@@ -82,6 +83,19 @@ router.post('/login', async (req, res, next) => {
   } catch (error) {
     console.log(error);
     next(error);
+  }
+});
+
+router.get('/:username/orders', async (req, res, next) => {
+  try {
+    const products = await getAllProducts();
+    if (products) {
+      res.send(products);
+    }
+  } catch ({ name, message }) {
+    {
+      name, message;
+    }
   }
 });
 

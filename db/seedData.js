@@ -8,6 +8,8 @@ const {
 
 const { createCartData, createDataCartProducts } = require('./cart');
 
+const { dataProducts, dataProductsCategories } = require('../db/data-dev');
+
 const dropTables = async () => {
   try {
     console.log('Dropping all Tables');
@@ -181,18 +183,20 @@ const createInitialUsers = async () => {
 
 const createInitialProductCategory = async () => {
   try {
-    const productCategoriesToCreate = [
-      {
-        name: 'Glassware',
-        description:
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua',
-      },
-      {
-        name: 'Dinnerware',
-        description:
-          'Lorem ipsum dolor sit amet, consectetur adipiscing ea aliqua',
-      },
-    ];
+    // const productCategoriesToCreate = [
+    //   {
+    //     name: 'Glassware',
+    //     description:
+    //       'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua',
+    //   },
+    //   {
+    //     name: 'Dinnerware',
+    //     description:
+    //       'Lorem ipsum dolor sit amet, consectetur adipiscing ea aliqua',
+    //   },
+    // ];
+
+    const productCategoriesToCreate = dataProductsCategories;
     const productCategory = await Promise.all(
       productCategoriesToCreate.map(createProductsCategory)
     );
@@ -226,22 +230,23 @@ const createInitialProductInventory = async () => {
 
 const createInitialProducts = async () => {
   try {
-    const productsToCreate = [
-      {
-        name: 'Crytal',
-        description: 'consectetur adipiscing ea aliqu',
-        price: 2,
-        category_id: 1,
-        inventory_id: 1,
-      },
-      {
-        name: 'Revol',
-        description: 'consectetur adipiscing',
-        price: 3,
-        category_id: 2,
-        inventory_id: 2,
-      },
-    ];
+    // const productsToCreate = [
+    //   {
+    //     name: 'Crytal',
+    //     description: 'consectetur adipiscing ea aliqu',
+    //     price: 2,
+    //     category_id: 1,
+    //     inventory_id: 1,
+    //   },
+    //   {
+    //     name: 'Revol',
+    //     description: 'consectetur adipiscing',
+    //     price: 3,
+    //     category_id: 2,
+    //     inventory_id: 2,
+    //   },
+    // ];
+    const productsToCreate = dataProducts;
     const product = await Promise.all(productsToCreate.map(createProduct));
     console.log('Products created:');
     console.log(product);

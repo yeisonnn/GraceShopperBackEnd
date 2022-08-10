@@ -44,10 +44,10 @@ router.use('/users', usersRouter);
 
 //PRODUCT ROUTER
 const productsRouter = require('./products');
-router.use('/products', productsRouter);
+router.use('/catalog', productsRouter);
 
 //PRODUCT CATEGORY ROUTER
 const productCategoryRouter = require('./productCategory');
-router.use('/category', productCategoryRouter);
+router.use('/catalog', productCategoryRouter);
 
 module.exports = router;
