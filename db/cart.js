@@ -28,40 +28,64 @@ const createDataCartProducts = async ({ product_id, cart_id, quantity }) => {
   }
 };
 
-// const getAllCartData = async({ id }) {
-//   try {
-//     const { rows: routines } = await client.query(
-//       `SELECT routines.*, users.username AS "creatorName"
-//       FROM routines JOIN users ON routines."creatorId" = users.id
-//        JOIN routine_activities ON routine_activities."routineId" = routines.id
-//       WHERE routine_activities."activityId" = $1 AND routines."isPublic" = true;
-//     `,
-//       [id]
-//     );
-//     return attachActivitiesToRoutines(routines);
-//   } catch (error) {
-//     throw error;
-//   }
-
-
-const updateCartData = async ({product_id, cart_id, quantity }) => {
+const updateCartProduct = async ({product_id, cart_id, quantity }) => {
   try {
     const { rows } = await client.query(
       `INSERT INTO cart_products(product_id, cart_id, quantity)
-    VALUES ($1)
+    VALUES ($1, $2, $3)
     FROM 
     RETURNING *`,
       [product_id, cart_id, quantity]
 
     );
-    return cart;
+    return rows;
   } catch (error) {
     throw error;
   }
 };
+const getAllCartData = async({ product_id, id }) => {
+  try {
+    const { rows } = await client.query(
+      `SELECT *
+      FROM cart
+      WHERE "product_id=$1 
+    `,
+      [product_id, id]
+    );
+    return rows;
+  } catch (error) {
+    throw error;
+  }
+}
+ 
+const deleteCartProduct = async ({product_id, quantity}) => {
+    try {
+      const {
+        rows: { rows },
+      } = await client.query(
+        `
+  DELETE FROM CART
+  WHERE "product_id"=$1 "quantity"=$2
+  RETURNING *;
+  `,
+        [product_id, quantity]
+      );
+  
+      return rows;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+
+
+
 
 module.exports = {
   createCartData,
   createDataCartProducts,
-  updateCartData,
+  updateCartProduct,
+  getAllCartData,
+  deleteCartProduct
+
 };
