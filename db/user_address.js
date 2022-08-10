@@ -48,7 +48,7 @@ const createUserAddress = async ({
    `,
         [id]
       );
-      return user_address.id === user_id;
+      return user_address.user_id === user_id;
     } catch (error) {
       throw error;
     }
