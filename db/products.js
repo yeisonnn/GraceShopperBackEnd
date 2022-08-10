@@ -80,8 +80,8 @@ const getProductByName = async ({ name }) => {
 const updateProductInventory = async ({ quantity, productId }) => {
   try {
     const { rows } = await client.query(
-      `INSET INTO product_inventory(quantity)
-      VALUES ($1)
+      `UPDATE product_inventory
+      SET quantity=($1)
       WHERE product_inventory.id=($2)
     RETURNING *`,
       [quantity, productId]
@@ -92,11 +92,11 @@ const updateProductInventory = async ({ quantity, productId }) => {
   }
 };
 
-const getProductsByCatagory = async ({ category_id }) => {
+const getProductsByCategory = async ({ category_id }) => {
   try {
     const { rows } = await client.query(
       `SELECT * FROM product
-      WHERE product.catagory_id=($1)
+      WHERE product.category_id=($1)
     RETURNING *`,
       [category_id]
     );
@@ -121,6 +121,20 @@ const updateProduct = async ({ name, description, price, productId }) => {
   }
 };
 
+const getAllProducts = async ({ }) => {
+  try {
+    const { rows } = await client.query(
+      `SELECT * 
+      FROM product
+    RETURNING *`,
+      []
+    );
+    return rows;
+  } catch (error) {
+    throw error;
+  }
+};
+
 module.exports = {
   createProductsCategory,
   createProductsInventory,
@@ -128,6 +142,7 @@ module.exports = {
   getProductById,
   getProductByName,
   updateProductInventory,
-  getProductsByCatagory,
-  updateProduct
+  getProductsByCategory,
+  updateProduct,
+  getAllProducts
 };
