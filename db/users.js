@@ -132,6 +132,30 @@ async function getUserByName(first_name, last_name) {
   }
 }
 
+const updateUser = async ({
+  first_name,
+  last_name,
+  mobile,
+  email,
+  user_id
+}) => {
+  try {
+    const { rows } = await client.query(
+      `UPDATE users 
+      SET first_name=($1) last_name=($2) mobile=($3) email=($4)
+     WHERE user_id =($5)
+      RETURNING *;`,
+      [first_name, last_name, mobile, email, user_id]
+    );
+    return rows;
+  } catch (error) {
+    throw error;
+  }
+};
+
+
+
+
 
 module.exports = {
   createUser,
@@ -140,5 +164,6 @@ module.exports = {
   getUser,
   getUserByMobile,
   getUserByEmail,
-  getUserByName
+  getUserByName,
+  updateUser
 };
