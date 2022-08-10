@@ -49,13 +49,15 @@ const createProduct = async ({
   }
 };
 
-const getProductById = async ({ productId }) => {
+const getProductById = async (id) => {
   try {
     const { rows } = await client.query(
-      `SELECT * FROM product
-      WHERE product.id=($1)
-    RETURNING *`,
-      [productId]
+      `
+    SELECT * FROM product
+    WHERE id = $1;
+
+    `,
+      [id]
     );
     return rows;
   } catch (error) {
@@ -92,13 +94,28 @@ const updateProductInventory = async ({ quantity, productId }) => {
   }
 };
 
-const getProductsByCategory = async ({ category_id }) => {
+const getProductsByCategory = async (category_id) => {
   try {
     const { rows } = await client.query(
       `SELECT * FROM product
       WHERE product.category_id=($1)
     RETURNING *`,
       [category_id]
+    );
+    return rows;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const getProductCategoryById = async (id) => {
+  try {
+    const { rows } = await client.query(
+      `
+      SELECT * FROM product_category
+      WHERE id = $1;
+    `,
+      [id]
     );
     return rows;
   } catch (error) {
@@ -121,14 +138,22 @@ const updateProduct = async ({ name, description, price, productId }) => {
   }
 };
 
-const getAllProducts = async ({ }) => {
+const getAllProducts = async () => {
   try {
-    const { rows } = await client.query(
-      `SELECT * 
-      FROM product
-    RETURNING *`,
-      []
-    );
+    const { rows } = await client.query(`
+    SELECT * FROM product;
+    `);
+
+    return rows;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const getAllProductCategory = async () => {
+  try {
+    const { rows } = await client.query(`SELECT * FROM product_category;
+    `);
     return rows;
   } catch (error) {
     throw error;
@@ -143,6 +168,8 @@ module.exports = {
   getProductByName,
   updateProductInventory,
   getProductsByCategory,
+  getProductCategoryById,
   updateProduct,
-  getAllProducts
+  getAllProducts,
+  getAllProductCategory,
 };

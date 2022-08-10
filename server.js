@@ -1,21 +1,26 @@
+require('dotenv').config();
 const express = require('express');
 const server = express();
 const client = require('./db/client');
-const port = 3000;
+const { PORT } = process.env;
+const morgan = require('morgan');
+const apiRouter = require('./api/index');
 
 //MIDDLEWARES
 server.use(express.json());
+server.use(morgan('dev'));
 
-//ROUTES
-server.get('/', (req, res) => {
+//SERVER
+server.use('/api', apiRouter);
+server.use((error, req, res, next) => {
   res.send({
-    page: 'home',
-    test: 'server working',
+    name: error.name,
+    message: error.message,
+    error: error.message,
   });
 });
 
-//SERVER
 client.connect();
-server.listen(port, () => {
-  console.log(`Running on server: ${port}`);
+server.listen(PORT, () => {
+  console.log(`Running on server: ${PORT}`);
 });
