@@ -133,12 +133,10 @@ async function getUserByName({ first_name, last_name }) {
   }
 }
 
-const updateUser = async (user_id,{
-  first_name,
-  last_name,
-  mobile,
-  email
-}) => {
+const updateUser = async (
+  user_id,
+  { first_name, last_name, mobile, email }
+) => {
   try {
     const { rows } = await client.query(
       `UPDATE users 
@@ -169,19 +167,18 @@ const getUserOrderHistoryById = async (id) => {
 };
 const getUserOrderHistoryByUsername = async (username) => {
   try {
-    const {rows} = await client.query(
+    const { rows } = await client.query(
       `SELECT product, product.price, cart_products.quantity FROM cart
       INNER JOIN cart_products ON cart_products.cart_id = cart.id
       INNER JOIN product ON product.id = cart_products.product_id
       WHERE username=$1 AND is_purchased = true;`,
-      [username] 
+      [username]
     );
     return rows;
-     } catch (error) {
-   throw error;
-    }
+  } catch (error) {
+    throw error;
   }
-
+};
 
 module.exports = {
   createUser,
@@ -193,5 +190,6 @@ module.exports = {
   getUserByName,
   updateUser,
   getUserOrderHistoryById,
-  getUserOrderHistoryByUsername
+  getUserOrderHistoryByUsername,
+  getUser,
 };

@@ -37,7 +37,7 @@ router.post('/register', async (req, res, next) => {
 
     const token = jwt.sign(
       {
-        id: user.id,
+        id: user.user_id,
         username,
       },
       JWT_SECRET,
@@ -70,14 +70,14 @@ router.post('/login', async (req, res, next) => {
     const user = await getUserByUsername(username);
     if (user.username == username) {
       const token = jwt.sign(
-        { id: user.id, username: user.username },
+        { id: user.user_id, username: user.username },
         JWT_SECRET
       );
       res.send({
         message: "you're logged in!",
         token: token,
         user: {
-          id: user.id,
+          id: user.user_id,
           username: user.username,
         },
       });
@@ -121,32 +121,30 @@ router.get('/:username/orders', requireUser, async (req, res, next) => {
 });
 
 // router.patch('/updateuser/:user_id', requireUser, async (req, res, next)=>{
-  
+
 //   try {
 //     const {first_name, last_name, mobile, email} = req.body
 //     const {user_id} = req.params
-    
+
 //     if(!originalUserData){
 //       next({error})
 //     }
 //     const id = await getUserById(user_id)
 //     const updateAddress = await updateUser({first_name, last_name, mobile, email, id})
-    
+
 //     res.send(updateAddress)
-    
+
 //   } catch ({name, message}) {
 //     {
-//       name, message 
+//       name, message
 //     }
 //   }
 // })
 
-
-
 router.patch('/:user_id/updateuser', requireUser, async (req, res, next) => {
   const { user_id } = req.params;
-  const { first_name,last_name,mobile,email } = req.body;
-  
+  const { first_name, last_name, mobile, email } = req.body;
+
   const updateFields = {};
 
   if (first_name) {
@@ -163,21 +161,22 @@ router.patch('/:user_id/updateuser', requireUser, async (req, res, next) => {
   if (email) {
     updateFields.email = email;
   }
-  
 
   try {
-    console.log("am i in?")
+    console.log('am i in?');
     const originalUserData = await getUserById(user_id);
-    
 
-    if (originalUserData.user_id === req.users.user_id) {
+    console.log(originalUserData, 'originalUserData');
+    console.log(req.params.user_id, 'req params');
+
+    if (originalUserData.user_id == req.params.user_id) {
       const updatedUserData = await updateUser(user_id, updateFields);
-      res.send(updatedUserData)
+      res.send(updatedUserData);
     } else {
       next({
         name: 'UnauthorizedUserError',
-        message: 'You cannot update stuff that is not yours'
-      })
+        message: 'You cannot update stuff that is not yours',
+      });
     }
   } catch ({ name, message }) {
     next({ name, message });
