@@ -127,8 +127,8 @@ const updateProduct = async ({ name, description, price, productId }) => {
   try {
     const { rows } = await client.query(
       `UPDATE product
-      SET name=($1) description=($2) price=($3)
-      WHERE product.id=($4)
+      SET name=$1, description=$2, price=$3
+      WHERE product.id=$4
     RETURNING *`,
       [name, description, price, productId]
     );
@@ -160,6 +160,17 @@ const getAllProductCategory = async () => {
   }
 };
 
+const deleteProduct = async (productId) => {
+  try {
+    const { rows } = await client.query(
+      `DELETE FROM product WHERE product.id=$1`, [productId]
+    )
+    return rows
+  } catch (error) {
+    throw error;
+  }
+}
+
 module.exports = {
   createProductsCategory,
   createProductsInventory,
@@ -172,4 +183,5 @@ module.exports = {
   updateProduct,
   getAllProducts,
   getAllProductCategory,
+  deleteProduct
 };
