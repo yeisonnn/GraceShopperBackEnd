@@ -3,6 +3,8 @@ const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 const { JWT_SECRET } = process.env;
+const {getUserById} = require("../db/users")
+
 
 router.use(async (req, res, next) => {
   const prefix = 'Bearer ';
@@ -20,7 +22,8 @@ console.log(user_id, "this is the id")
         req.user = await getUserById(user_id);
        
         next();
-      }else{
+      }else if(!user_id){
+  
         next({name:"JWT issue", message:"Contact your admin"})
       }
     } catch ({ name, message }) {
