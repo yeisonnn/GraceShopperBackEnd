@@ -29,7 +29,7 @@ async function getUserById(user_id) {
       rows: [users],
     } = await client.query(
       `
-  SELECT username, user_id FROM users WHERE user_id=$1;
+  SELECT * FROM users WHERE user_id=$1;
 `,
       [user_id]
     );
@@ -133,20 +133,19 @@ async function getUserByName({ first_name, last_name }) {
   }
 }
 
-const updateUser = async ({
+const updateUser = async (user_id,{
   first_name,
   last_name,
   mobile,
-  email,
-  user_id,
+  email
 }) => {
   try {
     const { rows } = await client.query(
       `UPDATE users 
-      SET first_name=($1) last_name=($2) mobile=($3) email=($4)
-     WHERE user_id =($5)
+      SET first_name=$1, last_name=$2, mobile=$3, email=$4
+     WHERE user_id =${user_id}
       RETURNING *;`,
-      [first_name, last_name, mobile, email, user_id]
+      [first_name, last_name, mobile, email]
     );
     return rows;
   } catch (error) {

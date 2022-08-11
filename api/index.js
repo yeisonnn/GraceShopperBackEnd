@@ -3,6 +3,8 @@ const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 const { JWT_SECRET } = process.env;
+const {getUserById} = require("../db/users")
+
 
 router.use(async (req, res, next) => {
   const prefix = 'Bearer ';
@@ -14,11 +16,15 @@ router.use(async (req, res, next) => {
     const token = auth.slice(prefix.length);
 
     try {
-      const { id } = jwt.verify(token, JWT_SECRET);
-
-      if (id) {
-        req.user = await getUserById(id);
+      const { user_id } = jwt.verify(token, JWT_SECRET);
+console.log(user_id, "this is the id")
+      if (user_id) {
+        req.user = await getUserById(user_id);
+       
         next();
+      }else if(!user_id){
+  
+        next({name:"JWT issue", message:"Contact your admin"})
       }
     } catch ({ name, message }) {
       next({ name, message });

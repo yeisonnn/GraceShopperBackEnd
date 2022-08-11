@@ -6,7 +6,10 @@ const {
   getUserByUsername,
   createUser,
   getUserOrderHistoryById,
+  updateUser,
+  getUserById,
 } = require('../db/users');
+const { requireUser } = require('./utils');
 const { JWT_SECRET } = process.env;
 
 //USER REGISTER
@@ -90,7 +93,7 @@ router.post('/login', async (req, res, next) => {
   }
 });
 
-router.get('/order-history', async (req, res, next) => {
+router.get('/order-history', requireUser, async (req, res, next) => {
   try {
     const userOrderHistory = await getUserOrderHistoryById(1);
 
@@ -104,7 +107,7 @@ router.get('/order-history', async (req, res, next) => {
   }
 });
 
-router.get('/:username/orders', async (req, res, next) => {
+router.get('/:username/orders', requireUser, async (req, res, next) => {
   try {
     const products = await getAllProducts();
     if (products) {
@@ -114,6 +117,70 @@ router.get('/:username/orders', async (req, res, next) => {
     {
       name, message;
     }
+  }
+});
+
+// router.patch('/updateuser/:user_id', requireUser, async (req, res, next)=>{
+  
+//   try {
+//     const {first_name, last_name, mobile, email} = req.body
+//     const {user_id} = req.params
+    
+//     if(!originalUserData){
+//       next({error})
+//     }
+//     const id = await getUserById(user_id)
+//     const updateAddress = await updateUser({first_name, last_name, mobile, email, id})
+    
+//     res.send(updateAddress)
+    
+//   } catch ({name, message}) {
+//     {
+//       name, message 
+//     }
+//   }
+// })
+
+
+
+router.patch('/:user_id/updateuser', requireUser, async (req, res, next) => {
+  const { user_id } = req.params;
+  const { first_name,last_name,mobile,email } = req.body;
+  
+  const updateFields = {};
+
+  if (first_name) {
+    updateFields.first_name = first_name;
+  }
+
+  if (last_name) {
+    updateFields.last_name = last_name;
+  }
+
+  if (mobile) {
+    updateFields.mobile = mobile;
+  }
+  if (email) {
+    updateFields.email = email;
+  }
+  
+
+  try {
+    console.log("am i in?")
+    const originalUserData = await getUserById(user_id);
+    
+
+    if (originalUserData.user_id === req.users.user_id) {
+      const updatedUserData = await updateUser(user_id, updateFields);
+      res.send(updatedUserData)
+    } else {
+      next({
+        name: 'UnauthorizedUserError',
+        message: 'You cannot update stuff that is not yours'
+      })
+    }
+  } catch ({ name, message }) {
+    next({ name, message });
   }
 });
 
