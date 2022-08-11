@@ -2,7 +2,11 @@ require('dotenv').config();
 const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
-const { getUserByUsername, createUser } = require('../db/users');
+const {
+  getUserByUsername,
+  createUser,
+  getUserOrderHistoryById,
+} = require('../db/users');
 const { JWT_SECRET } = process.env;
 
 //USER REGISTER
@@ -83,6 +87,20 @@ router.post('/login', async (req, res, next) => {
   } catch (error) {
     console.log(error);
     next(error);
+  }
+});
+
+router.get('/order-history', async (req, res, next) => {
+  try {
+    const userOrderHistory = await getUserOrderHistoryById(1);
+
+    if (userOrderHistory) {
+      res.send(userOrderHistory);
+    }
+  } catch ({ name, message }) {
+    {
+      name, message;
+    }
   }
 });
 

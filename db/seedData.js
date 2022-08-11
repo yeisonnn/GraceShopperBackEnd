@@ -91,24 +91,18 @@ const createTables = async () => {
       created_at DATE
     );`);
 
-    // await client.query(`CREATE TABLE shopping_session (
-    //   id SERIAL PRIMARY KEY,
-    //   user_id INTEGER REFERENCES users(user_id),
-    //   total DECIMAL(8,2)
-    // );`);
-
     await client.query(`CREATE TABLE cart (
       id SERIAL PRIMARY KEY,
       user_id INTEGER REFERENCES users(user_id),
-      is_purchased BOOLEAN
+      is_purchased BOOLEAN DEFAULT false
     );`);
 
     await client.query(`CREATE TABLE cart_products(
-  id SERIAL PRIMARY KEY,
-  product_id  INTEGER REFERENCES product(id),
-  cart_id INTEGER REFERENCES cart(id),
-  quantity INTEGER
-);`);
+      id SERIAL PRIMARY KEY,
+      product_id  INTEGER REFERENCES product(id),
+      cart_id INTEGER REFERENCES cart(id),
+      quantity INTEGER
+    );`);
 
     await client.query(`CREATE TABLE user_address(
       id SERIAL PRIMARY KEY,
@@ -131,9 +125,7 @@ const createTables = async () => {
 
     await client.query(`CREATE TABLE order_history(
       id SERIAL PRIMARY KEY,
-      user_id INTEGER REFERENCES users(user_id),
-      product_id INTEGER REFERENCES product(id),
-      order_items_id INTEGER REFERENCES order_items(id)		
+      cart_id INTEGER REFERENCES cart(id)
     );`);
   } catch (error) {
     console.log('Error creating tables');
@@ -261,7 +253,7 @@ const createInitialCartData = async () => {
   try {
     const cartToCreate = [
       { user_id: 1, is_purchased: true },
-      { user_id: 2, is_purchased: true },
+      { user_id: 2, is_purchased: false },
       { user_id: 3, is_purchased: true },
     ];
     const cart = await Promise.all(cartToCreate.map(createCartData));
@@ -280,6 +272,7 @@ const createInitialCartProducts = async () => {
       { product_id: 1, cart_id: 1, quantity: 200 },
       { product_id: 2, cart_id: 2, quantity: 300 },
       { product_id: 2, cart_id: 1, quantity: 400 },
+      { product_id: 3, cart_id: 3, quantity: 400 },
     ];
     const cartProducts = await Promise.all(
       cartProductsToCreate.map(createDataCartProducts)
