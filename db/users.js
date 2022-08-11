@@ -1,5 +1,5 @@
-const { lstat } = require("fs");
-const client = require("./client");
+const { lstat } = require('fs');
+const client = require('./client');
 
 const createUser = async ({
   username,
@@ -113,13 +113,14 @@ async function getUserByEmail(email) {
   }
 }
 
-async function getUserByName(first_name, last_name) {
+async function getUserByName({ first_name, last_name }) {
   try {
     const {
       rows: [users],
     } = await client.query(
       `
-  SELECT username, first_name, last_name FROM users WHERE first_name=$1, last_name=$2;
+  SELECT username, first_name, last_name FROM users 
+  WHERE first_name=$1, last_name=$2;
 `,
       [first_name, last_name]
     );
@@ -137,7 +138,7 @@ const updateUser = async ({
   last_name,
   mobile,
   email,
-  user_id
+  user_id,
 }) => {
   try {
     const { rows } = await client.query(
@@ -153,9 +154,20 @@ const updateUser = async ({
   }
 };
 
-
-
-
+const getUserOrderHistoryById = async (id) => {
+  try {
+    const { rows } = await client.query(
+      `SELECT product.name, product.price, cart_products.quantity FROM cart
+      INNER JOIN cart_products ON cart_products.cart_id = cart.id
+      INNER JOIN product ON product.id = cart_products.product_id
+      WHERE user_id=$1  AND is_purchased = true;`,
+      [id]
+    );
+    return rows;
+  } catch (error) {
+    throw error;
+  }
+};
 
 module.exports = {
   createUser,
@@ -165,5 +177,6 @@ module.exports = {
   getUserByMobile,
   getUserByEmail,
   getUserByName,
-  updateUser
+  updateUser,
+  getUserOrderHistoryById,
 };
