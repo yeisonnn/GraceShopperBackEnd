@@ -1,6 +1,6 @@
-const client = require('./client');
+const client = require("./client");
 
-const createCartData = async ({ user_id, is_purchased }) => {
+const createCartData = async ({user_id, is_purchased}) => {
   try {
     const { rows } = await client.query(
       `INSERT INTO cart(user_id, is_purchased)
@@ -27,6 +27,19 @@ const createDataCartProducts = async ({ product_id, cart_id, quantity }) => {
     throw error;
   }
 };
+const updateCart = async ({ user_id, is_purchased }) => {
+  try {
+    const {rows} = await client.query(
+      `UPDATE cart
+      SET is_purchased = true;
+      WHERE user_id=$1;
+      `, 
+      [user_id, is_purchased]
+    )
+  } catch (error) {
+    
+  }
+}
 
 const updateCartProduct = async ({ product_id, cart_id, quantity }) => {
   try {
@@ -82,4 +95,5 @@ module.exports = {
   updateCartProduct,
   getAllCartData,
   deleteCartProduct,
+  updateCart
 };
