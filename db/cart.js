@@ -1,12 +1,12 @@
-const client = require("./client");
+const client = require('./client');
 
-const createCartData = async ({user_id, is_purchased}) => {
+const createCartData = async ({ user_id, is_purchased, date }) => {
   try {
     const { rows } = await client.query(
-      `INSERT INTO cart(user_id, is_purchased)
-    VALUES ($1, $2)
+      `INSERT INTO cart(user_id, is_purchased, date)
+    VALUES ($1, $2, $3)
     RETURNING *`,
-      [user_id, is_purchased]
+      [user_id, is_purchased, date]
     );
     return rows;
   } catch (error) {
@@ -29,17 +29,15 @@ const createDataCartProducts = async ({ product_id, cart_id, quantity }) => {
 };
 const updateCart = async ({ user_id, is_purchased }) => {
   try {
-    const {rows} = await client.query(
+    const { rows } = await client.query(
       `UPDATE cart
       SET is_purchased = true;
       WHERE user_id=$1;
-      `, 
+      `,
       [user_id, is_purchased]
-    )
-  } catch (error) {
-    
-  }
-}
+    );
+  } catch (error) {}
+};
 
 const updateCartProduct = async ({ product_id, cart_id, quantity }) => {
   try {
@@ -95,5 +93,5 @@ module.exports = {
   updateCartProduct,
   getAllCartData,
   deleteCartProduct,
-  updateCart
+  updateCart,
 };

@@ -94,7 +94,8 @@ const createTables = async () => {
     await client.query(`CREATE TABLE cart (
       id SERIAL PRIMARY KEY,
       user_id INTEGER REFERENCES users(user_id),
-      is_purchased BOOLEAN DEFAULT false
+      is_purchased BOOLEAN DEFAULT false,
+      date DATE
     );`);
 
     await client.query(`CREATE TABLE cart_products(
@@ -252,9 +253,9 @@ const createInitialProducts = async () => {
 const createInitialCartData = async () => {
   try {
     const cartToCreate = [
-      { user_id: 1, is_purchased: true },
-      { user_id: 2, is_purchased: false },
-      { user_id: 3, is_purchased: true },
+      { user_id: 1, is_purchased: true, date: new Date() },
+      { user_id: 2, is_purchased: false, date: new Date() },
+      { user_id: 3, is_purchased: true, date: new Date() },
     ];
     const cart = await Promise.all(cartToCreate.map(createCartData));
     console.log('Cart Data created:');
@@ -270,8 +271,8 @@ const createInitialCartProducts = async () => {
   try {
     const cartProductsToCreate = [
       { product_id: 1, cart_id: 1, quantity: 200 },
-      { product_id: 2, cart_id: 2, quantity: 300 },
-      { product_id: 2, cart_id: 1, quantity: 400 },
+      { product_id: 34, cart_id: 1, quantity: 300 },
+      { product_id: 1, cart_id: 1, quantity: 600 },
       { product_id: 3, cart_id: 3, quantity: 400 },
     ];
     const cartProducts = await Promise.all(
