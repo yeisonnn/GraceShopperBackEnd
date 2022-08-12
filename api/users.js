@@ -8,6 +8,7 @@ const {
   getUserOrderHistoryById,
   updateUser,
   getUserById,
+  getAllEmails,
 } = require('../db/users');
 const { requireUser } = require('./utils');
 const { JWT_SECRET } = process.env;
@@ -18,6 +19,15 @@ router.post('/register', async (req, res, next) => {
 
   try {
     const _user = await getUserByUsername(username);
+    const allEmails = await getAllEmails();
+    const existingEmail = allEmails.find((e) => e.email === email);
+
+    if (existingEmail && Object.keys(existingEmail)) {
+      next({
+        name: 'EmailExistsError',
+        message: 'This email is already taken',
+      });
+    }
 
     if (_user) {
       next({
@@ -68,7 +78,7 @@ router.post('/login', async (req, res, next) => {
 
   try {
     const user = await getUserByUsername(username);
-    if (user.username == username) {
+    if (user.username == username && user.password == password) {
       const token = jwt.sign(
         { id: user.user_id, username: user.username },
         JWT_SECRET
@@ -93,9 +103,9 @@ router.post('/login', async (req, res, next) => {
   }
 });
 
-router.get('/order-history', requireUser, async (req, res, next) => {
+router.get('/:user_id/order-history', requireUser, async (req, res, next) => {
   try {
-    const userOrderHistory = await getUserOrderHistoryById(1);
+    const userOrderHistory = await getUserOrderHistoryById(req.params.user_id);
 
     if (userOrderHistory) {
       res.send(userOrderHistory);
@@ -163,8 +173,13 @@ router.patch('/:user_id/updateuser', requireUser, async (req, res, next) => {
   }
 
   try {
-    console.log('am i in?');
     const originalUserData = await getUserById(user_id);
+    if (!originalUserData) {
+      next({
+        name: 'UnauthorizedUserError',
+        message: 'This user does not exist!!',
+      });
+    }
 
     console.log(originalUserData, 'originalUserData');
     console.log(req.params.user_id, 'req params');

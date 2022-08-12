@@ -133,6 +133,15 @@ async function getUserByName({ first_name, last_name }) {
   }
 }
 
+async function getAllEmails() {
+  try {
+    const { rows } = await client.query(`SELECT email FROM users;`);
+    return rows;
+  } catch (error) {
+    throw error;
+  }
+}
+
 const updateUser = async (
   user_id,
   { first_name, last_name, mobile, email }
@@ -192,4 +201,5 @@ module.exports = {
   getUserOrderHistoryById,
   getUserOrderHistoryByUsername,
   getUser,
+  getAllEmails,
 };
