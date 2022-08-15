@@ -6,6 +6,7 @@ const {
   createProductsInventory,
 } = require('./products');
 
+
 const { createCartData, createDataCartProducts } = require('./cart');
 
 const { dataProducts, dataProductsCategories } = require('../db/data-dev');
