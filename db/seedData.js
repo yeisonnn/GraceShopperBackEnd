@@ -45,7 +45,8 @@ const createTables = async () => {
       first_name VARCHAR(30) NOT NULL,
       last_name VARCHAR(30) NOT NULL,
       mobile INTEGER,
-      email VARCHAR(60) UNIQUE NOT NULL
+      email VARCHAR(60) UNIQUE NOT NULL,
+      admin BOOLEAN DEFAULT false
       );`);
 
     await client.query(`CREATE TABLE product_category (
@@ -146,6 +147,7 @@ const createInitialUsers = async () => {
         last_name: 'Eric',
         mobile: 123,
         email: 'eric@mail.com',
+        admin: true
       },
       {
         username: 'Ben123',
@@ -154,6 +156,7 @@ const createInitialUsers = async () => {
         last_name: 'Ben',
         mobile: 123,
         email: 'Ben@mail.com',
+        admin: true
       },
       {
         username: 'Gabriel123',
@@ -162,6 +165,25 @@ const createInitialUsers = async () => {
         last_name: 'Gabriel',
         mobile: 123,
         email: 'gabriel@mail.com',
+        admin: true
+      },
+      {
+        username: 'notadmin',
+        password: 'notadmin',
+        first_name: 'Not',
+        last_name: 'Admin',
+        mobile: 4321,
+        email: 'notanadmin@mail.com',
+        admin: false
+      },
+      {
+        username: 'admin',
+        password: 'admin',
+        first_name: 'I am',
+        last_name: 'Admin',
+        mobile: 123456,
+        email: 'admin@mail.com',
+        admin: true
       },
     ];
 

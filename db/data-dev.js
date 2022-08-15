@@ -12,14 +12,14 @@ for (i = 0; i < 50; i++) {
     name: faker.commerce.productName(),
     description: faker.commerce.productDescription(),
     price: +faker.commerce.price(),
-    category_id: randomNumber(1, 15),
+    category_id: randomNumber(1, 10),
     inventory_id: randomNumber(1, 2),
   };
 
   dataProducts.push(newproduct);
 }
 
-for (i = 0; i < 15; i++) {
+for (i = 0; i < 10; i++) {
   const newProductCategory = {
     name: faker.commerce.department(),
     description: faker.commerce.productDescription(),
