@@ -8,14 +8,15 @@ const createUser = async ({
   last_name,
   mobile,
   email,
+  admin
 }) => {
   try {
     const { rows } = await client.query(
-      `INSERT INTO users(username, password, first_name, last_name, mobile, email) 
-      VALUES ($1, $2, $3, $4, $5, $6)
+      `INSERT INTO users(username, password, first_name, last_name, mobile, email, admin) 
+      VALUES ($1, $2, $3, $4, $5, $6, $7)
       ON CONFLICT (username) DO NOTHING
       RETURNING *`,
-      [username, password, first_name, last_name, mobile, email]
+      [username, password, first_name, last_name, mobile, email, admin]
     );
     return rows;
   } catch (error) {

@@ -15,7 +15,7 @@ const { JWT_SECRET } = process.env;
 
 //USER REGISTER
 router.post('/register', async (req, res, next) => {
-  const { username, password, first_name, last_name, mobile, email } = req.body;
+  const { username, password, first_name, last_name, mobile, email, admin } = req.body;
 
   try {
     const _user = await getUserByUsername(username);
@@ -43,6 +43,7 @@ router.post('/register', async (req, res, next) => {
       last_name,
       mobile,
       email,
+      admin
     });
 
     const token = jwt.sign(
@@ -153,7 +154,7 @@ router.get('/:username/orders', requireUser, async (req, res, next) => {
 
 router.patch('/:user_id/updateuser', requireUser, async (req, res, next) => {
   const { user_id } = req.params;
-  const { first_name, last_name, mobile, email } = req.body;
+  const { first_name, last_name, mobile, email, admin } = req.body;
 
   const updateFields = {};
 
@@ -170,6 +171,9 @@ router.patch('/:user_id/updateuser', requireUser, async (req, res, next) => {
   }
   if (email) {
     updateFields.email = email;
+  }
+  if(admin) {
+    updateFields.admin = admin;
   }
 
   try {
@@ -197,5 +201,7 @@ router.patch('/:user_id/updateuser', requireUser, async (req, res, next) => {
     next({ name, message });
   }
 });
+
+
 
 module.exports = router;
