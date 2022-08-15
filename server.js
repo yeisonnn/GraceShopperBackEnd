@@ -8,7 +8,7 @@ const apiRouter = require('./api/index');
 const cors = require('cors')
 
 //MIDDLEWARES
-app.use(cors())
+server.use(cors())
 server.use(express.json());
 server.use(morgan('dev'));
 
