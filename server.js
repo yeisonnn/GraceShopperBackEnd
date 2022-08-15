@@ -5,8 +5,10 @@ const client = require('./db/client');
 const { PORT = 3000 } = process.env
 const morgan = require('morgan');
 const apiRouter = require('./api/index');
+const cors = require('cors')
 
 //MIDDLEWARES
+app.use(cors())
 server.use(express.json());
 server.use(morgan('dev'));
 
