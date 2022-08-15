@@ -2,7 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const server = express();
 const client = require('./db/client');
-const { PORT } = process.env;
+const { PORT = 3000 } = process.env
 const morgan = require('morgan');
 const apiRouter = require('./api/index');
 
