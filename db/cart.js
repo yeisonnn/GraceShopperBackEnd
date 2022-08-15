@@ -87,6 +87,27 @@ const deleteCartProduct = async ({ product_id, quantity }) => {
   }
 };
 
+const attachCartProductsToCart = async ({cart}) => {
+try {
+  const {rows} = await client.query(
+    `
+    SELECT * FROM cart
+    LEFT JOIN cart_products ON cart_products.cart_id = cart.id
+    LEFT JOIN products ON products.id = cart_products.product_id
+    WHERE cart.user_id $1 AND is_purchased = false
+    ;`,
+    [cart]
+  );
+  return rows
+} catch (error) {
+ 
+}
+
+}
+
+
+
+
 module.exports = {
   createCartData,
   createDataCartProducts,
@@ -94,4 +115,5 @@ module.exports = {
   getAllCartData,
   deleteCartProduct,
   updateCart,
+  attachCartProductsToCart
 };
