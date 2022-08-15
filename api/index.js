@@ -55,4 +55,8 @@ router.use('/catalog', productsRouter);
 const productCategoryRouter = require('./productCategory');
 router.use('/catalog', productCategoryRouter);
 
+//CART ROUTER
+const cartRouter = require('./cart');
+router.use('/cart', cartRouter);
+
 module.exports = router;
