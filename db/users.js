@@ -49,7 +49,7 @@ async function getUserByUsername(username) {
         SELECT *
         FROM users
         WHERE username=$1
-        RETURNING *;
+        ;
       `,
     [username]
   );
