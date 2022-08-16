@@ -82,7 +82,7 @@ router.post('/login', async (req, res, next) => {
     const user = await getUserByUsername(username);
     if (user.username == username && user.password == password) {
       const token = jwt.sign(
-        { id: user.user_id, username: user.username },
+        { id: user.user_id, username: user.username, admin:user.admin},
         JWT_SECRET
       );
       res.send({
