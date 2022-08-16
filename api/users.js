@@ -50,6 +50,7 @@ router.post('/register', async (req, res, next) => {
       {
         id: user.user_id,
         username,
+        admin: user.admin
       },
       JWT_SECRET,
       {
