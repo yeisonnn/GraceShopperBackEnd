@@ -81,6 +81,7 @@ router.post('/login', async (req, res, next) => {
 
   try {
     const user = await getUserByUsername(username);
+    console.log(user, "user from back api")
     if (user.username == username && user.password == password) {
       const token = jwt.sign(
         { id: user.user_id, username: user.username, admin: user.admin},
