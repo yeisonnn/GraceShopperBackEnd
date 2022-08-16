@@ -44,7 +44,7 @@ async function getUserById(user_id) {
 }
 
 async function getUserByUsername(username) {
-  const { rows} = await client.query(
+  const { rows } = await client.query(
     `
         SELECT *
         FROM users
@@ -56,7 +56,7 @@ async function getUserByUsername(username) {
   if (!rows || !rows.length) {
     return null;
   }
-  return rows;
+  return rows[0];
 }
 
 async function getUser({ username, password }) {
