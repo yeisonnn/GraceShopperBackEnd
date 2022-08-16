@@ -90,7 +90,6 @@ router.post('/login', async (req, res, next) => {
       res.send({
         message: "you're logged in!",
         token: token,
-        admin: user.admin,
         user: {
           id: user.user_id,
           username: user.username,
