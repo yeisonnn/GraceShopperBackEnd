@@ -60,6 +60,7 @@ router.post('/register', async (req, res, next) => {
     res.send({
       message: 'thank you for signing up',
       token,
+      admin: user.admin
     });
   } catch ({ name, message }) {
     next({ name, message });
