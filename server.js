@@ -6,7 +6,7 @@ const { PORT = 3000 } = process.env
 const morgan = require('morgan');
 const apiRouter = require('./api/index');
 const cors = require('cors')
-const stripe = require("stripe")("pk_test_51LXprnBIJA8lOQIHEZrWR5feoiqcUV7QgcMzbFPm6zZd7qqa3RfdDrOsN4TLTy4GxPHfMfWQRdhZhSA5lY2y2E6300R9dcIYL2")
+const stripe = require("stripe")(process.env.SECRET_KEY)
 
 //MIDDLEWARES
 server.use(cors())
