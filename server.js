@@ -6,6 +6,7 @@ const { PORT = 3000 } = process.env
 const morgan = require('morgan');
 const apiRouter = require('./api/index');
 const cors = require('cors')
+const stripe = require("stripe")("pk_test_51LXprnBIJA8lOQIHEZrWR5feoiqcUV7QgcMzbFPm6zZd7qqa3RfdDrOsN4TLTy4GxPHfMfWQRdhZhSA5lY2y2E6300R9dcIYL2")
 
 //MIDDLEWARES
 server.use(cors())
@@ -21,6 +22,32 @@ server.use((error, req, res, next) => {
     error: error.message,
   });
 });
+
+//payment
+server.post("/payment", (req, res)=>{
+  const {products, token} = req.body
+
+  return stripe.customers.create({
+    email: token.email,
+    source: token.id
+  }).then(customer => {
+    stripe.charges.create({
+      amount: products.price,
+      currency: 'usd',
+      customer: customer.id,
+      receipt_email: token.email,
+      description: products.description,
+      shipping: {
+        name: token.card.name,
+        address: {
+          street:token.card.street
+        }
+      }
+    },)
+  }).then(result => res.status(200).json(result))
+  .catch(error => console.log(error))
+
+})
 
 client.connect();
 server.listen(PORT, () => {
