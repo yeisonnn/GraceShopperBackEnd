@@ -24,7 +24,7 @@ server.use((error, req, res, next) => {
   });
 });
 
-payment
+//payment
 server.post("/payment", (req, res)=>{
   const {products, token} = req.body
 
@@ -33,7 +33,7 @@ server.post("/payment", (req, res)=>{
     source: token.id
   }).then(customer => {
     stripe.charges.create({
-      amount: products.price,
+      amount: products.price * 100,
       currency: 'usd',
       customer: customer.id,
       receipt_email: token.email,
