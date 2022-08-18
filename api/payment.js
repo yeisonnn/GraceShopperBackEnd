@@ -7,11 +7,7 @@ const stripe = require("stripe")(
     process.env.SECRET_KEY
   );
 
-  server.use(
-    cors({
-      origin: ["https://graceshopperbackend.herokuapp.com/api/payment", "https://checkout.stripe.com"],
-    })
-  );
+
   
   server.post("/payment", async (req, res) => {
     console.log('getting here 1')
