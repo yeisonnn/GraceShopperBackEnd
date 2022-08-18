@@ -61,6 +61,7 @@ router.use('/cart', cartRouter);
 
 //PAYMENT ROUTER
 const paymentRouter = require('./payment');
+console.log(paymentRouter, "thispay")
 router.use('/payment', paymentRouter);
 
 
