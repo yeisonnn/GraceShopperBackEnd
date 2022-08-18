@@ -59,4 +59,10 @@ router.use('/catalog', productCategoryRouter);
 const cartRouter = require('./cart');
 router.use('/cart', cartRouter);
 
+//PAYMENT ROUTER
+const paymentRouter = require('./payment');
+router.use('/payment', paymentRouter);
+
+
+
 module.exports = router;
