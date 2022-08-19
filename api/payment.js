@@ -1,11 +1,9 @@
 // require('dotenv').config();
 const express = require("express");
 const router = express.Router();
-const cors = require("cors");
+// const cors = require("cors");
 
-router.use(cors({
-  origin: "https://graceshopperbackend.herokuapp.com/api/payment"
-}))
+
 
 const stripe = require("stripe")(
     process.env.SECRET_KEY
