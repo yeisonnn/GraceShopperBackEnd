@@ -1,7 +1,11 @@
 // require('dotenv').config();
 const express = require("express");
 const router = express.Router();
-// const cors = require("cors");
+const cors = require("cors");
+
+router.use(cors({
+  origin: "https://graceshopperbackend.herokuapp.com/api/payment"
+}))
 
 const stripe = require("stripe")(
     process.env.SECRET_KEY
@@ -10,7 +14,7 @@ const stripe = require("stripe")(
 console.log("hello world")
   
   router.post("/", async (req, res) => {
-    console.log('getting here 1')
+    console.log('am i in?')
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       line_items: [
@@ -18,16 +22,16 @@ console.log("hello world")
           price_data: {
             currency: "usd",
             product_data: {
-              name: "T-shirt",
+              name: "Oven",
             },
-            unit_amount: 2000,
+            unit_amount: 5000,
           },
           quantity: 1,
         },
       ],
       mode: "payment",
-      success_url: "https://graceshopperbackend.herokuapp.com/api/success.html",
-      cancel_url: "https://graceshopperbackend.herokuapp.com/api/cancel.html",
+      success_url: "http://localhost:3000/success.html",
+      cancel_url: "http://localhost:3000/cancel.html",
     });
     console.log(session, "session")
     res.status(200).send(session)
