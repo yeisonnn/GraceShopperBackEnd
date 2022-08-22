@@ -108,13 +108,10 @@ router.post('/login', async (req, res, next) => {
   }
 });
 
-router.get('/:user_id/order-history', requireUser, async (req, res, next) => {
+router.get('/:user_id/order-history', async (req, res, next) => {
   try {
-    const token = jwt.sign(
-      { id: user.user_id},
-      JWT_SECRET
-    );
-    const userOrderHistory = await getUserOrderHistoryById(token);
+  
+    const userOrderHistory = await getUserOrderHistoryById(req.params.user_id);
 
     if (userOrderHistory) {
       
