@@ -180,7 +180,7 @@ const getUserOrderHistoryById = async (id) => {
 const getUserOrderHistoryByUsername = async (username) => {
   try {
     const { rows } = await client.query(
-      `SELECT product, product.price, cart_products.quantity FROM cart
+      `SELECT product, product.price, cart_products.quantity, cart.date FROM cart
       INNER JOIN cart_products ON cart_products.cart_id = cart.id
       INNER JOIN product ON product.id = cart_products.product_id
       WHERE username=$1 AND is_purchased = true;`,
