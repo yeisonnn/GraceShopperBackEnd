@@ -109,14 +109,11 @@ router.post('/login', async (req, res, next) => {
 });
 
 router.get('/:user_id/order-history', requireUser, async (req, res, next) => {
-  const token = jwt.sign(
-    { user_id: user_id},
-    JWT_SECRET
-  );
   try {
-    const userOrderHistory = await getUserOrderHistoryById(token);
+    const userOrderHistory = await getUserOrderHistoryById(req.params.user_id);
 
     if (userOrderHistory) {
+      
       res.send(userOrderHistory);
     }
   } catch ({ name, message }) {
