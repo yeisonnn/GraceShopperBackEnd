@@ -1,4 +1,4 @@
-const express = require("express");
+const express = require('express');
 const {
   getAllCartData,
   createCartData,
@@ -7,10 +7,10 @@ const {
   updateCartProduct,
   deleteCartProduct,
   attachCartProductsToCart,
-} = require("../db/cart");
+} = require('../db/cart');
 const router = express.Router();
 
-router.post("/cart", async (req, res, next) => {
+router.post('/', async (req, res, next) => {
   try {
     const cart = await createCartData(req.body);
     res.send(cart);
@@ -21,7 +21,7 @@ router.post("/cart", async (req, res, next) => {
   }
 });
 
-router.post("/cart_products", async (req, res, next) => {
+router.post('/cart_products', async (req, res, next) => {
   try {
     const cart_products = await createDataCartProducts(req.body);
     res.send(cart_products);
@@ -32,9 +32,9 @@ router.post("/cart_products", async (req, res, next) => {
   }
 });
 
-router.get("/cart", async (req, res, next) => {
+router.get('/', async (req, res, next) => {
   try {
-    const cart = await getAllCartData(req.body);
+    const cart = await getAllCartData();
     if (cart) {
       res.send(cart);
     }
@@ -45,7 +45,7 @@ router.get("/cart", async (req, res, next) => {
   }
 });
 
-router.patch("/cart", async (req, res, next) => {
+router.patch('/', async (req, res, next) => {
   try {
     const cart = await updateCart(req.body);
     res.send(cart);
@@ -56,7 +56,7 @@ router.patch("/cart", async (req, res, next) => {
   }
 });
 
-router.patch("/cart_products", async (req, res, next) => {
+router.patch('/cart_products', async (req, res, next) => {
   try {
     const cartProduct = await updateCartProduct(req.body);
     res.send(cartProduct);
@@ -67,7 +67,7 @@ router.patch("/cart_products", async (req, res, next) => {
   }
 });
 
-router.delete("/cart", async (req, res, next) => {
+router.delete('/', async (req, res, next) => {
   try {
     const cartProduct = await deleteCartProduct(req.params);
     res.send(cartProduct);
@@ -78,14 +78,13 @@ router.delete("/cart", async (req, res, next) => {
   }
 });
 
-
-router.post("/cart", async (req, res, next) => {
-    try {
-        const productsToAdd = await attachCartProductsToCart(req.params);
-        res.send(productsToAdd)
-    } catch ({ name, message }) {
-        name, message 
-    }
-})
+router.post('/cart', async (req, res, next) => {
+  try {
+    const productsToAdd = await attachCartProductsToCart(req.params);
+    res.send(productsToAdd);
+  } catch ({ name, message }) {
+    name, message;
+  }
+});
 
 module.exports = router;

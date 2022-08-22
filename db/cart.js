@@ -27,15 +27,17 @@ const createDataCartProducts = async ({ product_id, cart_id, quantity }) => {
     throw error;
   }
 };
-const updateCart = async ({ user_id, is_purchased }) => {
+const updateCart = async ({ id, user_id }) => {
   try {
     const { rows } = await client.query(
       `UPDATE cart
-      SET is_purchased = true;
-      WHERE user_id=$1;
+      SET is_purchased = true
+      WHERE id=$1 AND user_id=$2
+      RETURNING *;
       `,
-      [user_id, is_purchased]
+      [id, user_id]
     );
+    return rows;
   } catch (error) {}
 };
 
@@ -53,14 +55,13 @@ const updateCartProduct = async ({ product_id, cart_id, quantity }) => {
     throw error;
   }
 };
-const getAllCartData = async ({ product_id, id }) => {
+const getAllCartData = async () => {
   try {
     const { rows } = await client.query(
       `SELECT *
       FROM cart
-      WHERE "product_id=$1 
-    `,
-      [product_id, id]
+      
+    `
     );
     return rows;
   } catch (error) {
@@ -87,26 +88,20 @@ const deleteCartProduct = async ({ product_id, quantity }) => {
   }
 };
 
-const attachCartProductsToCart = async ({user_id}) => {
-try {
-  const {rows} = await client.query(
-    `
+const attachCartProductsToCart = async ({ user_id }) => {
+  try {
+    const { rows } = await client.query(
+      `
     SELECT * FROM cart
     LEFT JOIN cart_products ON cart_products.cart_id = cart.id
     LEFT JOIN products ON products.id = cart_products.product_id
     WHERE cart.user_id = $1 AND is_purchased = false
     ;`,
-    [user_id]
-  );
-  return rows
-} catch (error) {
- 
-}
-
-}
-
-
-
+      [user_id]
+    );
+    return rows;
+  } catch (error) {}
+};
 
 module.exports = {
   createCartData,
@@ -115,5 +110,5 @@ module.exports = {
   getAllCartData,
   deleteCartProduct,
   updateCart,
-  attachCartProductsToCart
+  attachCartProductsToCart,
 };
