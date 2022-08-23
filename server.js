@@ -2,15 +2,14 @@ require('dotenv').config();
 const express = require('express');
 const server = express();
 const client = require('./db/client');
-const stripe = require("stripe")(process.env.SECRET_KEY)
-const { PORT = 3000 } = process.env
+const stripe = require('stripe')(process.env.SECRET_KEY);
+const { PORT = 3000 } = process.env;
 const morgan = require('morgan');
 const apiRouter = require('./api/index');
-const cors = require('cors')
-
+const cors = require('cors');
 
 //MIDDLEWARES
-server.use(cors())
+server.use(cors({ origin: '*' }));
 server.use(express.json());
 server.use(morgan('dev'));
 
@@ -23,8 +22,6 @@ server.use((error, req, res, next) => {
     error: error.message,
   });
 });
-
-
 
 client.connect();
 server.listen(PORT, () => {
