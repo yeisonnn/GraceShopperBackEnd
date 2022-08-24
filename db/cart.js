@@ -69,6 +69,20 @@ const getAllCartData = async () => {
   }
 };
 
+const getAllCartProducts = async () => {
+  try {
+    const { rows } = await client.query(
+      `SELECT *
+      FROM cart_products
+      
+    `
+    );
+    return rows;
+  } catch (error) {
+    throw error;
+  }
+};
+
 const deleteCartProduct = async ({ product_id, quantity }) => {
   try {
     const {
@@ -111,4 +125,5 @@ module.exports = {
   deleteCartProduct,
   updateCart,
   attachCartProductsToCart,
+  getAllCartProducts,
 };

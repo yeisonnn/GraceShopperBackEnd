@@ -7,6 +7,7 @@ const {
   updateCartProduct,
   deleteCartProduct,
   attachCartProductsToCart,
+  getAllCartProducts,
 } = require('../db/cart');
 const router = express.Router();
 
@@ -14,6 +15,17 @@ router.post('/', async (req, res, next) => {
   try {
     const cart = await createCartData(req.body);
     res.send(cart);
+  } catch ({ name, message }) {
+    {
+      name, message;
+    }
+  }
+});
+
+router.get('/cart_products', async (req, res, next) => {
+  try {
+    const cart_products = await getAllCartProducts();
+    res.send(cart_products);
   } catch ({ name, message }) {
     {
       name, message;
