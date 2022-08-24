@@ -9,6 +9,10 @@ const apiRouter = require('./api/index');
 const cors = require('cors');
 
 //MIDDLEWARES
+server.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  next();
+});
 server.use(cors({ origin: '*' }));
 server.use(express.json());
 server.use(morgan('dev'));
