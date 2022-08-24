@@ -28,17 +28,4 @@ server.listen(PORT, () => {
   console.log(`Running on server: ${PORT}`);
 });
 
-server.get('/', function(request, response) {
-  response.sendFile(__dirname + '/message.json');
-});
 
-// CORS header `Access-Control-Allow-Origin` set to accept all
-server.get('/allow-cors', function(request, response) {
-  response.set('Access-Control-Allow-Origin', '*');
-  response.sendFile(__dirname + '/message.json');
-});
-
-// listen for requests :)
-const listener = server.listen(process.env.PORT, function() {
-  console.log('Your server is listening on port ' + listener.address().port);
-});
