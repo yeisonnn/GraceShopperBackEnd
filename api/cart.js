@@ -12,6 +12,7 @@ const {
 const router = express.Router();
 
 router.post('/', async (req, res, next) => {
+ console.log("hello!!!")
   try {
     const cart = await createCartData(req.body);
     res.send(cart);
