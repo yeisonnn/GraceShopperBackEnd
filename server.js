@@ -17,6 +17,12 @@ server.use(function (req, res, next) {
   res.setHeader('Access-Control-Allow-Methods', 'POST, GET, PATCH, DELETE, OPTIONS');
   next();
 });
+server.use(
+  cors({
+      origin: "http://localhost:3000", 
+      credentials: true,
+  })
+);
 
 server.use(express.json());
 server.use(morgan('dev'));

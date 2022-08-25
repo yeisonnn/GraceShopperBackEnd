@@ -1,6 +1,7 @@
 const client = require('./client');
 
 const createCartData = async ({ user_id, is_purchased, date }) => {
+  console.log( user_id, is_purchased, date, "cgogogogogo" )
   try {
     const { rows } = await client.query(
       `INSERT INTO cart(user_id, is_purchased, date)
