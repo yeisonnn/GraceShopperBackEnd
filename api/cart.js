@@ -11,8 +11,8 @@ const {
 } = require('../db/cart');
 const router = express.Router();
 
-router.post('/', async (req, res, next) => {
- console.log("hello!!!")
+router.post('/cart_create', async (req, res, next) => {
+  console.log('hello!!!');
   try {
     const cart = await createCartData(req.body);
     res.send(cart);
