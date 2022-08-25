@@ -66,7 +66,8 @@ const createTables = async () => {
         description TEXT,
         price DECIMAL(8,2),
         category_id INTEGER REFERENCES product_category(id),
-        inventory_id INTEGER REFERENCES product_inventory(id)
+        inventory_id INTEGER REFERENCES product_inventory(id),
+        img TEXT
        );`);
 
     await client.query(` CREATE TABLE payments_details (
@@ -199,19 +200,6 @@ const createInitialUsers = async () => {
 
 const createInitialProductCategory = async () => {
   try {
-    // const productCategoriesToCreate = [
-    //   {
-    //     name: 'Glassware',
-    //     description:
-    //       'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua',
-    //   },
-    //   {
-    //     name: 'Dinnerware',
-    //     description:
-    //       'Lorem ipsum dolor sit amet, consectetur adipiscing ea aliqua',
-    //   },
-    // ];
-
     const productCategoriesToCreate = dataProductsCategories;
     const productCategory = await Promise.all(
       productCategoriesToCreate.map(createProductsCategory)
@@ -246,22 +234,7 @@ const createInitialProductInventory = async () => {
 
 const createInitialProducts = async () => {
   try {
-    // const productsToCreate = [
-    //   {
-    //     name: 'Crytal',
-    //     description: 'consectetur adipiscing ea aliqu',
-    //     price: 2,
-    //     category_id: 1,
-    //     inventory_id: 1,
-    //   },
-    //   {
-    //     name: 'Revol',
-    //     description: 'consectetur adipiscing',
-    //     price: 3,
-    //     category_id: 2,
-    //     inventory_id: 2,
-    //   },
-    // ];
+    
     const productsToCreate = dataProducts;
     const product = await Promise.all(productsToCreate.map(createProduct));
     console.log('Products created:');
@@ -276,9 +249,9 @@ const createInitialProducts = async () => {
 const createInitialCartData = async () => {
   try {
     const cartToCreate = [
-      { user_id: 1, is_purchased: true, date: new Date() },
-      { user_id: 2, is_purchased: false, date: new Date() },
-      { user_id: 3, is_purchased: true, date: new Date() },
+      { user_id: 1, is_purchased: true, date: new Date().toDateString() },
+      { user_id: 2, is_purchased: false, date: new Date().toDateString()},
+      { user_id: 3, is_purchased: true, date: new Date().toDateString() },
     ];
     const cart = await Promise.all(cartToCreate.map(createCartData));
     console.log('Cart Data created:');

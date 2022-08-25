@@ -34,14 +34,15 @@ const createProduct = async ({
   price,
   category_id,
   inventory_id,
+  img
 }) => {
   try {
     const { rows } = await client.query(
-      `INSERT INTO product(name, description, price, category_id, inventory_id)
-      VALUES ($1, $2, $3, $4, $5)
+      `INSERT INTO product(name, description, price, category_id, inventory_id, img)
+      VALUES ($1, $2, $3, $4, $5, $6)
       RETURNING *
     `,
-      [name, description, price, category_id, inventory_id]
+      [name, description, price, category_id, inventory_id, img]
     );
     return rows;
   } catch (error) {

@@ -14,6 +14,7 @@ for (i = 0; i < 50; i++) {
     price: +faker.commerce.price(),
     category_id: randomNumber(1, 10),
     inventory_id: randomNumber(1, 2),
+    img: faker.image.food(640, 480, true)
   };
 
   dataProducts.push(newproduct);
