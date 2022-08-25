@@ -23,7 +23,10 @@ server.use(
       credentials: true,
   })
 );
-
+server.use(function (req, res, next) {
+ console.log(req, "req**")
+  next()
+})
 server.use(express.json());
 server.use(morgan('dev'));
 
