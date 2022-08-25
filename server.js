@@ -19,7 +19,7 @@ server.use(function (req, res, next) {
 });
 server.use(
   cors({
-      origin: "*", 
+      origin: "https://630791cfe8949617875ca688--brilliant-kleicha-8a4278.netlify.app/", 
       credentials: true,
   })
 );
