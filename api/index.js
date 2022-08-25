@@ -4,6 +4,7 @@ const router = express.Router();
 const jwt = require('jsonwebtoken');
 const { JWT_SECRET } = process.env;
 const { getUserById, getUserByUsername } = require('../db/users');
+const cors = require('cors')
 
 router.use(async (req, res, next) => {
   const prefix = 'Bearer ';
@@ -57,7 +58,7 @@ router.use('/catalog', productCategoryRouter);
 
 //CART ROUTER
 const cartRouter = require('./cart');
-router.use('/cart', cartRouter);
+router.use('/cart', cors(), cartRouter);
 
 //PAYMENT ROUTER
 const paymentRouter = require('./payment');
